@@ -44,7 +44,7 @@ configure:
     --with-pkg-config-libdir="$(STAGEDIR)/lib/pkgconfig/" \
     --with-ticlib \
     --host=$(HOST_TARGET) \
-    --build=$(HOST_BUILD)
+    --build=$(HOST_BUILD) \
 	)
 
 clean:
