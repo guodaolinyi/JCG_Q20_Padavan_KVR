@@ -43,17 +43,8 @@ extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar -xf $(SRC_NAME).tar.gz; \
 		patch -d $(SRC_NAME) -p1 < $(SRC_NAME).patch; \
-	fi )
-
-config_test:
-	( if [ -f ./config_done ]; then \
-		echo "the same configuration"; \
-	else \
-		make configure && touch config_done; \
-	fi )
-
-configure:
-	( cd $(SRC_NAME) ; \
+	fi ; \
+	cd $(SRC_NAME) ; \
 	./Configure \
 		linux-mips32 \
 		shared \
@@ -85,4 +76,3 @@ romfs:
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_OPENSSL_EXE),y)
 	$(ROMFSINST) $(SRC_NAME)/apps/openssl /usr/bin/openssl
 endif
-
