@@ -40,18 +40,19 @@ download_test:
 	fi )
 
 extract_test:
-	( if [ ! -d $(SRC_NAME) ]; then \
-		tar -xf $(SRC_NAME).tar.gz; \
-		patch -d $(SRC_NAME) -p1 < $(SRC_NAME).patch; \
-	fi ; \
-	cd $(SRC_NAME) ; \
-	./Configure \
-		linux-mips32 \
-		shared \
-		--prefix=$(STAGEDIR) \
-		--openssldir=/etc/ssl \
-		$(OPENSSL_CIPHERS) ; \
-	)
+	config_test:
+		( if [ ! -d $(SRC_NAME) ]; then \
+			tar -xf $(SRC_NAME).tar.gz; \
+			patch -d $(SRC_NAME) -p1 < $(SRC_NAME).patch; \
+		fi ; \
+		cd $(SRC_NAME) ; \
+		./Configure \
+			linux-mips32 \
+			shared \
+			--prefix=$(STAGEDIR) \
+			--openssldir=/etc/ssl \
+			$(OPENSSL_CIPHERS) ; \
+		)
 
 clean:
 	if [ -f $(SRC_NAME)/Makefile ] ; then \
