@@ -1,5 +1,5 @@
-SRC_NAME=ncurses-6.3
-SRC_URL=https://github.com/mirror/ncurses/archive/v6.3.zip
+SRC_NAME=ncurses-6.5
+SRC_URL=http://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz
 
 all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
@@ -11,7 +11,8 @@ download_test:
 
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
-		unzip -qq $(SRC_NAME).zip ; \
+		#unzip -qq $(SRC_NAME).zip ; \
+		tar xvf ncurses-6.5.tar.gz
 		patch -p1 -d $(SRC_NAME) < $(SRC_NAME).patch ; \
 	fi )
 
@@ -25,23 +26,24 @@ config_test:
 configure:
 	( cd $(SRC_NAME) ; \
 	./configure \
-		--prefix=$(STAGEDIR) \
-		--with-install-prefix=$(STAGEDIR) \
-		--without-ada \
-		--without-termlib \
-		--without-progs \
-		--without-tests \
-		--without-manpages \
-		--enable-widec \
-		--with-shared \
-		--without-debug \
-		--with-normal \
-		--without-profile \
-		--enable-overwrite \
-		--enable-pc-files \
-		--with-pkg-config-libdir="$(STAGEDIR)/lib/pkgconfig/" \
-		--host=$(HOST_TARGET) \
-		--build=$(HOST_BUILD) ; \
+    --prefix=$(STAGEDIR) \
+    --with-install-prefix=$(STAGEDIR) \
+    --without-ada \
+    --without-termlib \
+    --without-progs \
+    --without-tests \
+    --without-manpages \
+    --enable-widec \
+    --with-shared \
+    --without-debug \
+    --with-normal \
+    --without-profile \
+    --enable-overwrite \
+    --enable-pc-files \
+    --with-pkg-config-libdir="$(STAGEDIR)/lib/pkgconfig/" \
+    --with-ticlib \
+    --host=$(HOST_TARGET) \
+    --build=$(HOST_BUILD)
 	)
 
 clean:
