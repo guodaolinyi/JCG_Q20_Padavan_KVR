@@ -13,7 +13,7 @@ extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		#unzip -qq $(SRC_NAME).zip ; \
 		tar xvf ncurses-6.5.tar.gz ; \
-		diff -Naur ncurses-6.3-original ncurses-6.3 > ncurses-6.3.patch ; \
+		diff -Naur ncurses-6.5-original ncurses-6.5 > ncurses-6.5.patch ; \
 		#patch -p1 -d $(SRC_NAME) < $(SRC_NAME).patch ; \
 	fi )
 
