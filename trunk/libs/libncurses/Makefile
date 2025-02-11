@@ -5,16 +5,16 @@ all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
 download_test:
-	( if [ ! -f $(SRC_NAME).zip ]; then \
-		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_NAME).zip $(SRC_URL); \
+	( if [ ! -f ncurses-6.5.tar.gz ]; then \
+		wget -t5 --timeout=20 --no-check-certificate -O ncurses-6.5.tar.gz http://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz; \
 	fi )
 
 extract_test:
-	( if [ ! -d $(SRC_NAME) ]; then \
-		#unzip -qq $(SRC_NAME).zip ; \
+	( if [ ! -d ncurses-6.5 ]; then \
 		tar xvf ncurses-6.5.tar.gz ; \
+		cp -r ncurses-6.5 ncurses-6.5-original ; \
+		# 如果需要修改，在这里进行 \
 		diff -Naur ncurses-6.5-original ncurses-6.5 > ncurses-6.5.patch ; \
-		#patch -p1 -d $(SRC_NAME) < $(SRC_NAME).patch ; \
 	fi )
 
 config_test:
