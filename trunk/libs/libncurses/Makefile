@@ -12,8 +12,9 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		#unzip -qq $(SRC_NAME).zip ; \
-		tar xvf ncurses-6.5.tar.gz
-		patch -p1 -d $(SRC_NAME) < $(SRC_NAME).patch ; \
+		tar xvf ncurses-6.5.tar.gz ; \
+		diff -Naur ncurses-6.3-original ncurses-6.3 > ncurses-6.3.patch ; \
+		#patch -p1 -d $(SRC_NAME) < $(SRC_NAME).patch ; \
 	fi )
 
 config_test:
