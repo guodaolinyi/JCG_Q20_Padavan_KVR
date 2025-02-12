@@ -30,6 +30,7 @@ ifeq (,$(filter y,$(CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC) $(CONFIG_FIRMWARE_INCLUD
 OPENSSL_OPTIONS += no-ec
 endif
 
+#all: download_test extract_test config_test
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
 
@@ -39,19 +40,27 @@ download_test:
 	fi )
 
 extract_test:
-	config_test:
-		( if [ ! -d $(SRC_NAME) ]; then \
-			tar -xf $(SRC_NAME).tar.gz; \
-			patch -d $(SRC_NAME) -p1 < $(SRC_NAME).patch; \
-		fi ; \
-		cd $(SRC_NAME) ; \
-		./Configure \
-			linux-mips32 \
-			shared \
-			--prefix=$(STAGEDIR) \
-			--openssldir=/etc/ssl \
-			$(OPENSSL_CIPHERS) ; \
-		)
+	( if [ ! -d $(SRC_NAME) ]; then \
+		tar -xf $(SRC_NAME).tar.gz; \
+		patch -d $(SRC_NAME) -p1 < $(SRC_NAME).patch; \
+	fi )
+
+config_test:
+	( if [ -f ./config_done ]; then \
+		echo "the same configuration"; \
+	else \
+		make configure && touch config_done; \
+	fi )
+
+configure:
+	( cd $(SRC_NAME) ; \
+	./Configure \
+		linux-mips32 \
+		shared \
+		--prefix=$(STAGEDIR) \
+		--openssldir=/etc/ssl \
+		$(OPENSSL_CIPHERS) ; \
+	)
 
 clean:
 	if [ -f $(SRC_NAME)/Makefile ] ; then \
